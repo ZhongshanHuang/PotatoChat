@@ -1,0 +1,4 @@
+${PODS_ROOT}/Target Support Files/Pods-PotatoChat/Pods-PotatoChat-frameworks.sh
+${PODS_ROOT}/HyphenateLite/iOS_Pods_IMSDK_V3.6.1/HyphenateLite.framework
+${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework
+${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework
