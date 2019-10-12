@@ -147,7 +147,7 @@ extension PhotoViewerViewController: PhotoViewerDismissDelegate {
         presentView.image = imageView.image
         presentView.frame = scrollView.convert(imageView.frame, to: UIApplication.shared.keyWindow!)
         
-        return imageView
+        return presentView
     }
     
     func indexPathForDismiss() -> IndexPath {

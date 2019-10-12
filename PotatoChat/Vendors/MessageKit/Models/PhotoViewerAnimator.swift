@@ -66,31 +66,45 @@ class PhotoViewerAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         if transitionType == .present {
             guard let presentDelegate = presentDelegate, let indexPath = indexPath else { return }
             
+            let background = UIView(frame: .zero)
+            background.frame = transitionContext.containerView.bounds
+            background.backgroundColor = UIColor(white: 0, alpha: 0.1)
+            transitionContext.containerView.addSubview(background)
+            
             let imageView = presentDelegate.imageViewForPresent(indexPath: indexPath)
             imageView.frame = presentDelegate.photoViewerPresentFromRect(indexPath: indexPath)
             transitionContext.containerView.addSubview(imageView)
             
-            toView.alpha = 0
-            UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+            toView.isHidden = true
+            UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, options: .curveEaseOut, animations: {
                 imageView.frame = presentDelegate.photoViewerPresentToRect(indexPath: indexPath)
+                background.backgroundColor = UIColor(white: 0, alpha: 1)
             }, completion: { (finish) in
-                toView.alpha = 1
+                toView.isHidden = false
+                background.removeFromSuperview()
                 imageView.removeFromSuperview()
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
             })
             
         } else if transitionType == .dismiss {
             fromView.removeFromSuperview()
-            
             guard let dismissDelegate = dismissDelegate else { return }
+            
+            let background = UIView(frame: .zero)
+            background.frame = transitionContext.containerView.bounds
+            background.backgroundColor = UIColor(white: 0, alpha: 1)
+            transitionContext.containerView.addSubview(background)
+            
             let imageView = dismissDelegate.imageViewForPresent()
             transitionContext.containerView.addSubview(imageView)
             let indexPath = dismissDelegate.indexPathForDismiss()
             
-            UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+            UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, options: .curveEaseOut, animations: {
                 imageView.frame = self.presentDelegate!.photoViewerPresentFromRect(indexPath: indexPath)
+                background.backgroundColor = UIColor(white: 0, alpha: 0.3)
             }, completion: { (finish) in
                 imageView.removeFromSuperview()
+                background.removeFromSuperview()
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
             })
         }
